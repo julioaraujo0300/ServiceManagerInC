@@ -3,6 +3,7 @@
 #include <locale.h>
 #include <string.h>
 #include <ctype.h>
+#include <windows.h>
 
 struct Servico {
     char cliente[200];
@@ -34,15 +35,14 @@ void InserirRegisto(struct Servico *s){
         scanf("%f", &s->custo);
         fgetc(stdin);
         printf("O serviço já foi pago?(S para sim, N para não): ");
-        scanf("%c", &s->estado);
+        scanf(" %c", &s->estado);
         s->estado = toupper(s->estado);
         //funciona com ou sem caps lock para evitar frustração ao utilizador
-        //Código para garantir que o estado é guardado com um valor válido
+        //Código para garantir que o estado é guardado comp um valor válido
         while(s->estado != 'S' && s->estado != 'N'){
             printf("Resposta inválida, por favor digite um carater válido!(S para sim, N para não): ");
-            scanf("%c", &s->estado);
+            scanf(" %c", &s->estado);
             s->estado = toupper(s->estado);
-            fgetc(stdin);
         }
     }
 
@@ -75,9 +75,8 @@ void Inserir() {
 
     fgetc(stdin);
     printf("Deseja inserir outro registo de serviço?(S se sim, N se não): ");
-    scanf("%c", &repete);
+    scanf(" %c", &repete);
     repete = toupper(repete);
-    fgetc(stdin);
 
 
     //funciona com ou sem caps lock para evitar frustração ao utilizador
@@ -90,8 +89,7 @@ void Inserir() {
         //Escrever a informação inserida dentro do ficheiro
         fwrite(&serv, sizeof(struct Servico), 1, fpServico);
         printf("Deseja inserir outro registo de serviço?(S se sim, N se não): ");
-        scanf("%c", &repete);
-        fgetc(stdin);
+        scanf(" %c", &repete);
 
     }
 
@@ -331,6 +329,7 @@ int main()
 {
     //Criar um menu aplicacional
     setlocale(LC_ALL, "");      // Para carateres portugueses
+    SetConsoleOutputCP(CP_UTF8);
     int opcao = 0;              //resultado da escolha da opção
     do {
         printf("1- Inserir\n2- Listar\n3- Pesquisar\n4- Filtrar serviços em dívida\n5- Filtrar serviços pagos\n6- Alterar\n7- Saír");
